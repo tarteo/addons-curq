@@ -43,5 +43,5 @@ jobs:
           target: ${{ inputs.target }}
           cache-from: ${{ env.CACHE_FROM }}
           cache-to: ${{ env.CACHE_TO }}
-          labels: |
-            nl.curq.hello=world
+      - name: Generate Output
+        run: echo "hello=world" >> $GITHUB_OUTPUT
