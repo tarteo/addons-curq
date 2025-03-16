@@ -9,6 +9,9 @@ on:
       target:
         default: "base"
         type: string
+      labels:
+        default: ""
+        type: string
       cache:
         default: false
         type: boolean
@@ -32,11 +35,20 @@ jobs:
           password: ${{ secrets.GITHUB_TOKEN }}
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
+      - name: Extract metadata
+        id: meta
+        uses: docker/metadata-action@v5
+        with:
+          labels: |
+            nl.curq.hello=world
       - name: Build and Push
-        uses: docker/build-push-action@v4
+        uses: docker/build-push-action@v5
         with:
           push: true
           tags: ${{ inputs.tags }}
           target: ${{ inputs.target }}
           cache-from: ${{ env.CACHE_FROM }}
           cache-to: ${{ env.CACHE_TO }}
+          annotations: ${{ steps.meta.outputs.annotations }}
+          labels: |
+            nl.curq.somelabel=hello
